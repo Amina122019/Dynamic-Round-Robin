@@ -1,6 +1,16 @@
+/*
+
+Name: Rama Ahmad Alsefri , ID: 2105895 , Section: DAR 
+Compiler Name and Version: NetBeans IDE 8.2
+Hardware Configuration: Inter core i7 - 16 GB RAM
+Operating System and Version: 64-bit Windows 10 Home 22H2
+
+
+ */
 
 public class Job {
 
+    // Job details
     private int arrTime;
     private int jobNum;
     private int memoryUnit;
@@ -17,7 +27,8 @@ public class Job {
     private int accumulatedTime;
     private int waitingTime;
 
-      public Job() {
+    // Constructors
+    public Job() {
     }
 
     public Job(int arrTime) {
@@ -34,13 +45,13 @@ public class Job {
         this.priority = priority;
         this.remainBT = burstTime;
     }
-    
-     public Job(int arrTime, int jobNum) {
+
+    public Job(int arrTime, int jobNum) {
         this.arrTime = arrTime;
         this.jobNum = jobNum;
     }
-     
-     
+
+    // Getters and Setters  
     public int getWaitingTime() {
         return waitingTime;
     }
@@ -56,7 +67,6 @@ public class Job {
     public void setStatus(String status) {
         this.status = status;
     }
-
 
     public int getTotalTimeInCPU() {
         return totalTimeInCPU;
@@ -81,7 +91,6 @@ public class Job {
     public void setRemainBT(int remainTime) {
         this.remainBT -= remainTime;
     }
-
 
     public int getArrTime() {
         return arrTime;
