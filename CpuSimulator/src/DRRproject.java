@@ -1,4 +1,14 @@
 
+/*
+
+Name: Rama Ahmad Alsefri , ID: 2105895 , Section: DAR 
+Compiler Name and Version: NetBeans IDE 8.2
+Hardware Configuration: Inter core i7 - 16 GB RAM
+Operating System and Version: 64-bit Windows 10 Home 22H2
+
+
+*/
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
