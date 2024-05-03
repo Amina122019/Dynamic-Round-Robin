@@ -7,8 +7,7 @@ Hardware Configuration: Inter core i7 - 16 GB RAM
 Operating System and Version: 64-bit Windows 10 Home 22H2
 
 
-*/
-
+ */
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -82,7 +81,7 @@ public class DRRproject {
         String command;
 
         // Create file object
-        File inputFile = new File("input3.txt");
+        File inputFile = new File("input1.txt");
 
         // Check if the file exists ?
         if (!inputFile.exists()) {
@@ -94,7 +93,7 @@ public class DRRproject {
         Scanner input = new Scanner(inputFile);
 
         // Create PrintWriter object to write on the file 
-        output = new PrintWriter("output13.txt");
+        output = new PrintWriter("output.txt");
 
         boolean printed = false;
         // Loop to go through the commands
@@ -118,7 +117,7 @@ public class DRRproject {
 
                 // Flag to be sure of the execution of the system 
                 boolean executed = false;
-                
+
                 // Check if it is the last display 
                 if (systemStateTime >= 999999 || completeQ.size() == jobNum) {
 
@@ -126,7 +125,7 @@ public class DRRproject {
                     startExecution();
                     // Print the final state of the system 
                     finalState();
-                   
+
                     executed = true;
 
                 }
@@ -137,7 +136,7 @@ public class DRRproject {
                     // Print the final state of the system 
                     finalState();
                 }
-                
+
                 if (executed) {
                     // Retuning the system to its initial state 
                     prepForNextConfig();
@@ -213,7 +212,7 @@ public class DRRproject {
         quantum = CPU_Job.getBurstTime();
 
         // execute the first job 
-        ExecuteFirstJob();
+        executeFirstJob();
 
         // Now we are ready to receive jobs
         // Make the first job enter the CPU directly without the need to go through the ready queue
@@ -259,7 +258,7 @@ public class DRRproject {
 
     //-----------------------------------------------------------------------------
     // Method to execute the first job that enters the CPU  
-    public static void ExecuteFirstJob() {
+    public static void executeFirstJob() {
 
         // Sets its starting time and finishing time 
         CPU_Job.setStartTime(currentTime);
@@ -302,6 +301,7 @@ public class DRRproject {
 
             // Release its resources and make it go to the complete queue
             TerminateJob();
+            checkHoldQueues();
 
             // Check if the there is any jobs in the ready queue
             if (!readyQ.isEmpty()) {
@@ -328,6 +328,7 @@ public class DRRproject {
         if (readyQ.isEmpty()) {
 
             // Make the job stay in the CPU and execute it more 
+            quantum = CPU_Job.getRemainBT();
             executeJob();
             SRAR_Update();
 
@@ -336,10 +337,11 @@ public class DRRproject {
 
             // Return the job in the CPU back to the ready queue 
             readyQ.add(CPU_Job);
-            SRAR_Update();
-
+            checkHoldQueues();
+            
             // Get the first job in the ready queue to be in the CPU
             CPU_Job = readyQ.poll();
+            SRAR_Update();
 
             // Update the quantum as the lowest of the remaining burts time or AR
             if (CPU_Job.getRemainBT() < AR) {
@@ -350,7 +352,6 @@ public class DRRproject {
 
             // Execute the job inside the CPU
             executeJob();
-
             SRAR_Update();
 
         }
@@ -402,19 +403,8 @@ public class DRRproject {
     }
 
     // ----------------------------------------------------------------------------------
-    // Mehtod to terminate the job in the CPU -> not needed anymore
-    public static void TerminateJob() {
-
-        // Realease any allocated resources
-        availableMemory = availableMemory + CPU_Job.getMemoryUnit();
-        availableDevices = availableDevices + CPU_Job.getDeviceNum();
-
-        // Add it to the complete queue and set its status
-        completeQ.add(CPU_Job);
-
-        // The CPU is idle now , no job in it 
-        CPU_Job = null;
-
+    // Mehtod to Check on the jobs in the hold queue
+    public static void checkHoldQueues() {
         // Check the hold queus to move jobs from them to the ready queue if possible
         int holdQ1_size = holdQ1.size();
         for (int i = 0; i < holdQ1_size; i++) {
@@ -457,6 +447,21 @@ public class DRRproject {
                 holdQ2.add(j);
             }
         }
+    }
+
+    // ----------------------------------------------------------------------------------
+    // Mehtod to terminate the job in the CPU -> not needed anymore
+    public static void TerminateJob() {
+
+        // Realease any allocated resources
+        availableMemory = availableMemory + CPU_Job.getMemoryUnit();
+        availableDevices = availableDevices + CPU_Job.getDeviceNum();
+
+        // Add it to the complete queue and set its status
+        completeQ.add(CPU_Job);
+
+        // The CPU is idle now , no job in it 
+        CPU_Job = null;
 
     }
 
