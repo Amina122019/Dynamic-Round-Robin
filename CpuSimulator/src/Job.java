@@ -51,14 +51,6 @@ public class Job {
         this.jobNum = jobNum;
     }
 
-    // Getters and Setters  
-    public int getWaitingTime() {
-        return waitingTime;
-    }
-
-    public void setWaitingTime(int waitingTime) {
-        this.waitingTime += waitingTime;
-    }
 
     public String getStatus() {
         return status;
@@ -84,14 +76,7 @@ public class Job {
         this.enterCount = enterCount;
     }
 
-    public int getRemainBT() {
-        return remainBT;
-    }
-
-    public void setRemainBT(int remainTime) {
-        this.remainBT -= remainTime;
-    }
-
+   
     public int getArrTime() {
         return arrTime;
     }
@@ -173,4 +158,19 @@ public class Job {
         this.accumulatedTime += accumulatedTime;
     }
 
+     public int getRemainBT() {
+        return remainBT;
+    }
+
+    public void setRemainBT(int remainTime) {
+        this.remainBT -= remainTime;
+    }
+
+    public int getWaitingTime() {
+        return waitingTime;
+    }
+
+    public void setWaitingTime(int waitingTime) {
+        this.waitingTime += waitingTime;
+    }
 }
