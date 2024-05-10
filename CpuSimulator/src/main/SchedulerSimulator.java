@@ -184,6 +184,9 @@ public class SchedulerSimulator {
         activeProcess.execute(TQ);
         int finish_time = (activeProcess.getJobs().getArrivalTime() + waitTime + activeProcess.getJobs().getServiceTime());
         activeProcess.getJobs().setFinishTime(finish_time);
+        // Calculate remaining time
+        int remainingTime = activeProcess.getJobs().getServiceTime() - activeProcess.getElapsedTime();
+
         return finish_time;
     }
 
